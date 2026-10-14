@@ -1,0 +1,1 @@
+<Patch><Operation Class="PatchOperationAdd"><xpath>Defs/DrawStyleCategoryDef[defName="Default2D" or defName="Default1D" or defName="Fill2D"]/styles</xpath><value><li>Merthsoft_FreeformLine_Continuous</li></value></Operation></Patch>

@@ -1,0 +1,4 @@
+**/obj/
+**/bin/
+Tools/
+1.7/Assemblies/*.deps.json

@@ -1,0 +1,28 @@
+using Merthsoft.DesignatorShapes.Freeform;
+using Verse;
+using System.Reflection;
+int checks=0;
+void Check(bool value,string name) { if(!value) throw new Exception(name); checks++; }
+void Hook(Type t,string name) => t.GetMethod(name,BindingFlags.Static|BindingFlags.NonPublic)!.Invoke(null,null);
+var s=new Stroke(); s.Add(17,3,40,20); s.Add(22,3,40,20);
+Check(s.Count==6 && s.Cells.Contains((17,3)) && s.Cells.Contains((22,3)),"asymmetric origin and first endpoint");
+s.Add(22,8,40,20); Check(s.Count==11,"continuous bend");
+s.Add(17,3,40,20); int count=s.Count; for(int i=0;i<10000;i++)s.Add(17,3,40,20); Check(s.Count==count,"stationary bounded");
+s.Clear(); s.Add(2,2,40,20); s.Add(8,8,40,20); Check(s.Count==7,"diagonal endpoints");
+s.Clear(); s.Add(0,0,40,20); s.Add(-100000,100000,40,20); Check(s.Count==20,"offmap samples clamped");
+s.Clear(); Check(s.Count==0,"clear");
+var style=new FreeformStyle(); var b=new List<IntVec3>(); var manager=Find.DesignatorManager; manager.Dragger.Dragging=true;
+var origin=new IntVec3(17,0,3);
+style.Update(origin,new(22,0,3),b); style.Update(origin,new(22,0,8),b); Check(b.Count==11,"adapter continuous paused updates");
+Hook(typeof(EndStroke),"Postfix"); style.Update(origin,origin,b); Check(b.Count==1,"same origin new stroke");
+style.Update(origin,new(22,0,3),b); Hook(typeof(StartStroke),"Prefix"); style.Update(origin,origin,b); Check(b.Count==1,"explicit start clears");
+style.Update(origin,new(22,0,3),b); Hook(typeof(SwitchStyle),"Prefix"); style.Update(origin,origin,b); Check(b.Count==1,"style switch clears");
+style.Update(origin,new(22,0,3),b); manager.SelectedDesignator=new(); style.Update(origin,origin,b); Check(b.Count==1,"tool switch clears");
+style.Update(origin,new(22,0,3),b); Find.CurrentMap=new(); style.Update(origin,origin,b); Check(b.Count==1,"map switch clears");
+style.Update(origin,new(22,0,3),b); Hook(typeof(NewGame),"Prefix"); style.Update(origin,origin,b); Check(b.Count==1,"new game clears");
+style.Update(origin,new(22,0,3),b); Hook(typeof(LoadGame),"Prefix"); style.Update(origin,origin,b); Check(b.Count==1,"load game clears");
+manager.Dragger.Dragging=false; style.Update(origin,new(4,0,5),b); Check(b.SequenceEqual(new[]{new IntVec3(4,0,5)}),"idle cursor only");
+manager.Dragger.Dragging=true; style.Update(origin,origin,b); Check(b.Count==1,"idle resets previous path");
+Find.CurrentMap=null; style.Update(origin,origin,b); Check(b.Count==0,"no map clears");
+Check(!style.CanHaveDuplicates,"unique cells avoid quadratic duplicate filter");
+Console.WriteLine($"PASS: {checks} regression checks");

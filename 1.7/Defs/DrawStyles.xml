@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs><DrawStyleDef><defName>Merthsoft_FreeformLine_Continuous</defName><label>freeform line</label><uiIconPath>UI/Commands/FreeformLine/freeform_line</uiIconPath><drawStyleType>Merthsoft.DesignatorShapes.Freeform.FreeformStyle</drawStyleType><drawOutline>false</drawOutline><canSnap>false</canSnap></DrawStyleDef></Defs>
