@@ -13,7 +13,7 @@ public sealed class FreeformStyle : DrawStyle
     private Designator tool;
     private IntVec3 start;
     public override bool CanHaveDuplicates => false;
-    internal static void Reset() { Active?.stroke.Clear(); Active = null; }
+    internal static void Reset() { if (Active != null) { Active.stroke.Clear(); Active.map = null; Active.tool = null; } Active = null; }
     public override void Update(IntVec3 origin, IntVec3 target, List<IntVec3> buffer)
     {
         buffer.Clear();
@@ -57,3 +57,4 @@ static class UpdateStroke
         return false;
     }
 }
+
