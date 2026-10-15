@@ -1,5 +1,14 @@
 # Freeform Lines for RimWorld 1.7
 
+<!-- merthsoft-download -->
+## Download
+
+[Download freeform-line-shape.zip](https://merthsoft.com/RimWorld/freeform-line-shape.zip) — RimWorld 1.7 release.
+
+The archive includes older supported version folders where available. Extract the mod folder into RimWorld's `Mods` directory.
+<!-- /merthsoft-download -->
+
+
 [Source repository](https://github.com/merthsoft/freeform-line-shape)
 
 Select a tool in a vanilla Default1D, Default2D or Fill2D palette, select freeform line, then hold left mouse and trace a continuous path. Release to designate; use the vanilla cancel action to discard. The brush is one cell wide. No settings, history, or dependency on Designator Shapes state.
